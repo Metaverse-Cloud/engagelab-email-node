@@ -18,7 +18,7 @@
   "scripts": {
     "build": "tsc",
     "prepack": "npm run build",
-    "test": "npm run build && node --test"
+    "test": "tsc -p tsconfig.test.json && node --test \"dist-test/test/**/*.test.js\""
   },
   "keywords": [
     "engagelab",
