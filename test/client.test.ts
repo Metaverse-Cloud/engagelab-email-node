@@ -45,6 +45,9 @@ test("send posts JSON payload with Basic auth", async () => {
   assert.equal(calls[0]?.options.method, "POST");
   assert.equal(calls[0]?.options.headers.Authorization, "Basic YXBpX3VzZXI6YXBpX2tleQ==");
   assert.equal(calls[0]?.options.headers["Content-Type"], "application/json; charset=utf-8");
+  assert.equal(calls[0]?.options.headers["X-EngageLab-SDK-Name"], "engagelab-email-node");
+  assert.ok(typeof calls[0]?.options.headers["X-EngageLab-SDK-Version"] === "string");
+  assert.ok(calls[0]?.options.headers["X-EngageLab-Request-ID"]?.startsWith("req_"));
   assert.deepEqual(JSON.parse(calls[0]?.options.body ?? ""), payload);
 });
 

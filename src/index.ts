@@ -1,3 +1,20 @@
+import { randomUUID } from "node:crypto";
+import { createRequire } from "node:module";
+import { fileURLToPath } from "node:url";
+import { dirname, join } from "node:path";
+
+const require = createRequire(import.meta.url);
+const __dirname = dirname(fileURLToPath(import.meta.url));
+// Walk up from the compiled output to find the project root's package.json
+function findPackageJson(dir: string): Record<string, unknown> {
+  try { return require(join(dir, "package.json")); } catch {}
+  const parent = dirname(dir);
+  if (parent === dir) throw new Error("Cannot find package.json");
+  return findPackageJson(parent);
+}
+const pkg = findPackageJson(__dirname);
+const SDK_VERSION: string = String(pkg.version);
+
 export const DEFAULT_BASE_URL = "https://email.api.engagelab.cc";
 export const TURKEY_BASE_URL = "https://emailapi-tr.engagelab.com";
 
@@ -100,6 +117,7 @@ export class EngageLabEmailClient {
       const response = await this.fetchImpl(`${this.baseUrl}${path}`, {
         method: "POST",
         headers: {
+          ...this.sdkHeaders(),
           "Authorization": this.authorizationHeader(),
           "Content-Type": "application/json; charset=utf-8",
           "Accept": "application/json"
@@ -135,6 +153,14 @@ export class EngageLabEmailClient {
   authorizationHeader(): string {
     const token = Buffer.from(`${this.apiUser}:${this.apiKey}`, "utf8").toString("base64");
     return `Basic ${token}`;
+  }
+
+  private sdkHeaders(): Record<string, string> {
+    return {
+      "X-EngageLab-SDK-Name": "engagelab-email-node",
+      "X-EngageLab-SDK-Version": SDK_VERSION,
+      "X-EngageLab-Request-ID": `req_${randomUUID()}`
+    };
   }
 }
 
