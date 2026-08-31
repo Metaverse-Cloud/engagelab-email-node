@@ -1,5 +1,7 @@
 # engagelab-email
 
+> Official EngageLab Email Node.js SDK.
+
 Node.js SDK for EngageLab Email sending APIs.
 
 Supported sending APIs:
@@ -137,3 +139,13 @@ try {
 ```
 
 The SDK accepts request payloads in the same shape as EngageLab's REST API.
+
+## Anonymous Usage Metrics
+
+The SDK adds an anonymous installation ID to API request headers so EngageLab can measure distinct SDK installations. The ID is stored locally under `~/.config/engagelab-email/telemetry.json`; no API keys, email content, or recipients are collected. The first successful API request also carries `X-EngageLab-SDK-Init: 1`.
+
+To disable these headers:
+
+```bash
+ENGAGELAB_EMAIL_TELEMETRY_DISABLED=1 node app.js
+```

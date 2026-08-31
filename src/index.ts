@@ -2,6 +2,7 @@ import { randomUUID } from "node:crypto";
 import { createRequire } from "node:module";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
+import { createSdkTelemetry, SdkTelemetry, SdkTelemetryOptions } from "./telemetry.js";
 
 const require = createRequire(import.meta.url);
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -44,6 +45,7 @@ export interface EngageLabEmailClientOptions {
   baseUrl?: string;
   fetchImpl?: FetchLike;
   timeoutMs?: number;
+  telemetry?: SdkTelemetryOptions;
 }
 
 export type FetchLike = (url: string, init: RequestInit) => Promise<Response>;
@@ -64,6 +66,7 @@ export class EngageLabEmailClient {
   private readonly baseUrl: string;
   private readonly fetchImpl: FetchLike;
   private readonly timeoutMs: number;
+  private readonly telemetry: SdkTelemetry;
 
   constructor(options: EngageLabEmailClientOptions = {}) {
     const {
@@ -71,7 +74,8 @@ export class EngageLabEmailClient {
       apiKey = process.env.ENGAGELAB_API_KEY,
       baseUrl = DEFAULT_BASE_URL,
       fetchImpl = globalThis.fetch,
-      timeoutMs = 30000
+      timeoutMs = 30000,
+      telemetry = {}
     } = options;
 
     if (!apiUser) {
@@ -89,6 +93,7 @@ export class EngageLabEmailClient {
     this.baseUrl = baseUrl.replace(/\/+$/, "");
     this.fetchImpl = fetchImpl;
     this.timeoutMs = timeoutMs;
+    this.telemetry = createSdkTelemetry(telemetry);
   }
 
   send<TResponse = unknown>(payload: EngageLabEmailPayload): Promise<TResponse> {
@@ -139,6 +144,7 @@ export class EngageLabEmailClient {
         );
       }
 
+      this.telemetry.markInitialized();
       return data as TResponse;
     } catch (error) {
       if (isAbortError(error)) {
@@ -159,7 +165,8 @@ export class EngageLabEmailClient {
     return {
       "X-EngageLab-SDK-Name": "engagelab-email-node",
       "X-EngageLab-SDK-Version": SDK_VERSION,
-      "X-EngageLab-Request-ID": `req_${randomUUID()}`
+      "X-EngageLab-Request-ID": `req_${randomUUID()}`,
+      ...this.telemetry.headers()
     };
   }
 }
