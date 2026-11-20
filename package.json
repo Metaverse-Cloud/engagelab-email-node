@@ -23,7 +23,13 @@
   "keywords": [
     "engagelab",
     "email",
-    "sdk"
+    "sdk",
+    "ai",
+    "ai-agents",
+    "send-email",
+    "email-api",
+    "transactional-email",
+    "nodejs"
   ],
   "author": "",
   "license": "MIT",

@@ -1,0 +1,20 @@
+# engagelab-email (Node.js SDK)
+
+> Node.js SDK for EngageLab Email sending APIs — normal, template, calendar and MIME email sends.
+
+Install: `npm install engagelab-email`
+Requires: Node.js >= 18.
+
+Sending APIs (base URLs: Singapore `https://email.api.engagelab.cc`, Turkey `https://emailapi-tr.engagelab.com`):
+
+- `POST /v1/mail/send` — normal email
+- `POST /v1/mail/sendtemplate` — template email
+- `POST /v1/mail/sendcalendar` — calendar email
+- `POST /v1/mail/send_mime` — MIME email
+
+Related tools:
+
+- CLI `@engagelabemail/cli` (https://github.com/Metaverse-Cloud/engagelab-email-cli) — agent mailbox workflows
+- MCP server `@engagelabemail/mcp` (https://github.com/Metaverse-Cloud/engagelab-email-mcp) — for Model Context Protocol clients
+
+Docs: https://github.com/Metaverse-Cloud/engagelab-email-node#readme

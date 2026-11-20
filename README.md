@@ -1,8 +1,11 @@
 # engagelab-email
 
+[![npm](https://img.shields.io/npm/v/engagelab-email)](https://www.npmjs.com/package/engagelab-email)
+[![Node](https://img.shields.io/badge/node-%3E%3D18-green)](https://nodejs.org)
+
 > Official EngageLab Email Node.js SDK.
 
-Node.js SDK for EngageLab Email sending APIs.
+Node.js SDK for EngageLab Email sending APIs — transactional email from applications and AI agent backends.
 
 Supported sending APIs:
 
@@ -149,3 +152,9 @@ To disable these headers:
 ```bash
 ENGAGELAB_EMAIL_TELEMETRY_DISABLED=1 node app.js
 ```
+
+
+## Related tools
+
+- CLI [`@engagelabemail/cli`](https://github.com/Metaverse-Cloud/engagelab-email-cli) — mailbox workflows from the command line
+- MCP server [`@engagelabemail/mcp`](https://github.com/Metaverse-Cloud/engagelab-email-mcp) — for Claude Desktop, Claude Code, Cursor and other MCP clients
